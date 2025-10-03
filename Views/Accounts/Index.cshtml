@@ -1,0 +1,81 @@
+@model IEnumerable<BankingManagementSystem.Models.Account>
+
+@{
+    ViewData["Title"] = "All Accounts";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Bank Accounts Management</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create New Account
+        </a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.AccountNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.AccountHolderName)</th>
+                    <th>@Html.DisplayNameFor(model => model.AccountType)</th>
+                    <th>@Html.DisplayNameFor(model => model.Balance)</th>
+                    <th>@Html.DisplayNameFor(model => model.DateOpened)</th>
+                    <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.AccountNumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.AccountHolderName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.AccountType)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DateOpened)</td>
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.AccountId" class="btn btn-info btn-sm">Details</a>
+                            <a asp-action="Edit" asp-route-id="@item.AccountId" class="btn btn-warning btn-sm">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.AccountId" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <strong>No accounts found!</strong> Click "Create New Account" to add your first account.
+        </div>
+    }
+</div>
